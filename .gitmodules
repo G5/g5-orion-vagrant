@@ -1,0 +1,3 @@
+[submodule "g5stack"]
+	path = g5stack
+	url = git@github.com:G5/g5stack.git
