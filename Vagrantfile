@@ -39,6 +39,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  ruby_versions = Set.new
+  projects_file = File.exist?('projects-override.yml') ? 'projects-override.yml' : 'projects.yml'
+  require 'yaml'
+  YAML.load_file(projects_file).each_pair do |project_name, project_git_url|
+    source_dir = File.expand_path("../../#{project_name}", __FILE__)
+    dest_dir = "/#{project_name}"
+
+    if File.exists?(source_dir)
+      # Use NFS to share folders.  It's faster, but doesn't work on Windows.
+      config.vm.synced_folder(source_dir, dest_dir, nfs: true)
+
+      # Add project ruby version to list for rbenv to install
+      ruby_ver = "#{source_dir}/.ruby-version"
+      ruby_versions << File.read(ruby_ver).strip if File.exists?(ruby_ver)
+    else
+      puts "I didn't find a directory for '#{project_name}'.  That might be OK, if you didn't need it."
+    end
+  end
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

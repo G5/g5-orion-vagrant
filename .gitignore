@@ -1,6 +1,9 @@
 # Ignore vagrant dotfile
 .vagrant
 
+# Ignore custom projects list
+projects-override.yml
+
 # Ignore projects under development
 g5-hub/
 g5-configurator/

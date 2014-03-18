@@ -1,3 +1,6 @@
+# This is the base file.  You can make a copy of this, name is
+# projects-override.yml, and ask the Vagrant VM to mount other directories that
+# you might be developing in.  They'll be mounted at '/'.
 g5-hub: git@github.com:G5/g5-hub.git
 g5-configurator: git@github.com:G5/g5-configurator.git
 g5-client-app-creator: git@github.com:G5/g5-client-app-creator.git
