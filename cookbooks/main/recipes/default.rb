@@ -21,6 +21,6 @@ rubies.each do |ruby_ver|
   end
 end
 
-[ "git", "nodejs" ].each do |package_name|
+[ "git", "nodejs", "libsqlite3-dev", "sqlite3"].each do |package_name|
   package package_name
 end
