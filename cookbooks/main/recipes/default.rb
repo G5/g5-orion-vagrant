@@ -5,10 +5,20 @@ end
 include_recipe "sane_postgresql"
 
 include_recipe "vagrant_rbenv"
+# Pre-install all required rubies
+rubies = node[:rbenv][:ruby_versions]
 
-rbenv_ruby "1.9.3-p385"
-rbenv_gem "bundler" do
-  ruby_version "1.9.3-p385"
+global_ruby = node[:rbenv][:global_ruby_version].strip
+rubies << global_ruby unless rubies.include?(global_ruby)
+
+rubies.each do |ruby_ver|
+  rbenv_ruby ruby_ver do
+    global(ruby_ver == global_ruby)
+  end
+
+  rbenv_gem "bundler" do
+    ruby_version ruby_ver
+  end
 end
 
 [ "git", "nodejs" ].each do |package_name|
