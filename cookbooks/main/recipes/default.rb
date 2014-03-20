@@ -21,8 +21,12 @@ rubies.each do |ruby_ver|
   end
 end
 
-[ "git", "nodejs", "libsqlite3-dev", "sqlite3"].each do |package_name|
+[ "git", "nodejs", "vim", "libsqlite3-dev", "sqlite3"].each do |package_name|
   package package_name
+end
+
+execute "Set default editor" do
+  command "update-alternatives --set editor #{node[:editor][:default]}"
 end
 
 template "/home/vagrant/.gitconfig" do
