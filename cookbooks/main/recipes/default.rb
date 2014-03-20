@@ -41,3 +41,5 @@ template "/home/vagrant/.gitconfig" do
      :push_default => node[:git][:push][:default]
   })
 end
+
+include_recipe "phantomjs::default"
