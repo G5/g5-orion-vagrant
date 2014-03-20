@@ -81,7 +81,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "main"
     chef.json = {
       :postgresql => { :password => { :postgres => "password" } },
-      :rbenv => { :ruby_versions => ruby_versions.to_a }
+      :rbenv => { :ruby_versions => ruby_versions.to_a },
+      :git => { :user => { :name => `git config user.name`.strip,
+                           :email =>`git config user.email`.strip } }
     }
   end
 end
