@@ -43,3 +43,7 @@ template "/home/vagrant/.gitconfig" do
 end
 
 include_recipe "phantomjs::default"
+
+magic_shell_environment "SECRET_TOKEN" do
+  value SecureRandom.hex(64)
+end
