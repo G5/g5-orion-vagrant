@@ -67,3 +67,15 @@ end
 magic_shell_environment "ID_RSA" do
   value `echo $ID_RSA`
 end
+
+magic_shell_environment "HEROKU_REPO" do
+  value `echo $HEROKU_REPO`
+end
+
+magic_shell_environment "GITHUB_REPO" do
+  value `echo $GITHUB_REPO`
+end
+
+magic_shell_environment "APP_DISPLAY_NAME" do
+  value "G5 Client App Updater"
+end
