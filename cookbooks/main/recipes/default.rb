@@ -91,3 +91,15 @@ end
 magic_shell_environment "APP_DISPLAY_NAME" do
   value "G5 Client App Updater"
 end
+
+magic_shell_environment "AWS_ACCESS_KEY_ID" do
+  value `echo $AWS_ACCESS_KEY_ID`
+end
+
+magic_shell_environment "AWS_SECRET_ACCESS_KEY" do
+  value `echo $AWS_SECRET_ACCESS_KEY`
+end
+
+magic_shell_environment "AWS_REGION" do
+  value `echo $AWS_REGION`
+end
