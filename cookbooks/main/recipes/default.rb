@@ -47,3 +47,7 @@ include_recipe "phantomjs::default"
 magic_shell_environment "SECRET_TOKEN" do
   value SecureRandom.hex(64)
 end
+
+magic_shell_environment "G5_CONFIGURATOR_WEBHOOK_URL" do
+  value "http://g5-configurator.dev/webhooks"
+end
