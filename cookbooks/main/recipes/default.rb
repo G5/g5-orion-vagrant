@@ -52,6 +52,18 @@ magic_shell_environment "G5_CONFIGURATOR_WEBHOOK_URL" do
   value "http://g5-configurator.dev/webhooks"
 end
 
+magic_shell_environment "LAYOUT_GARDEN_URL" do
+  value "http://g5-layout-garden.dev/"
+end
+
+magic_shell_environment "THEME_GARDEN_URL" do
+  value "http://g5-theme-garden.dev/"
+end
+
+magic_shell_environment "WIDGET_GARDEN_URL" do
+  value "http://g5-widget-garden.dev/"
+end
+
 magic_shell_environment "HEROKU_APP_NAME" do
   value "not-a-heroku-app"
 end
