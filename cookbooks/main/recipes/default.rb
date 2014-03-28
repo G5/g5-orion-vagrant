@@ -51,3 +51,19 @@ end
 magic_shell_environment "G5_CONFIGURATOR_WEBHOOK_URL" do
   value "http://g5-configurator.dev/webhooks"
 end
+
+magic_shell_environment "HEROKU_APP_NAME" do
+  value "not-a-heroku-app"
+end
+
+magic_shell_environment "HEROKU_API_KEY" do
+  value `echo $HEROKU_API_KEY`
+end
+
+magic_shell_environment "HEROKU_USERNAME" do
+  value `echo $HEROKU_USERNAME`
+end
+
+magic_shell_environment "ID_RSA" do
+  value `echo $ID_RSA`
+end
