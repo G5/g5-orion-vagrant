@@ -49,19 +49,19 @@ magic_shell_environment "SECRET_TOKEN" do
 end
 
 magic_shell_environment "G5_CONFIGURATOR_WEBHOOK_URL" do
-  value "http://g5-configurator.dev/webhooks"
+  value "http://g5-configurator.herokuapp.com/consume_feed"
 end
 
 magic_shell_environment "LAYOUT_GARDEN_URL" do
-  value "http://g5-layout-garden.dev/"
+  value "http://g5-layout-garden.herokuapp.com/"
 end
 
 magic_shell_environment "THEME_GARDEN_URL" do
-  value "http://g5-theme-garden.dev/"
+  value "http://g5-theme-garden.herokuapp.com/"
 end
 
 magic_shell_environment "WIDGET_GARDEN_URL" do
-  value "http://g5-widget-garden.dev/"
+  value "http://g5-widget-garden.herokuapp.com/"
 end
 
 magic_shell_environment "HEROKU_APP_NAME" do
