@@ -8,3 +8,6 @@ g5-sibling-deployer: git@github.com:G5/g5-sibling-deployer.git
 g5-content-management-system: git@github.com:g5search/g5-content-management-system.git
 g5-phone-number-service: git@github.com:G5/g5-phone-number-service.git
 g5-pricing-and-availability-service: git@github.com:G5/g5-pricing-and-availability-service.git
+g5-layout-garden: git@github.com:G5/g5-layout-garden.git
+g5-theme-garden: git@github.com:g5search/g5-theme-garden.git
+g5-widget-garden: git@github.com:G5/g5-widget-garden.git
