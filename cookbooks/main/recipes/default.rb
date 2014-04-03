@@ -103,3 +103,43 @@ end
 magic_shell_environment "AWS_REGION" do
   value `echo $AWS_REGION`
 end
+
+magic_shell_environment "G5_HUB_PORT" do
+  value "3001"
+end
+
+magic_shell_environment "G5_CONFIGURATOR_PORT" do
+  value "3002"
+end
+
+magic_shell_environment "G5_CLIENT_APP_CREATOR_PORT" do
+  value "3003"
+end
+
+magic_shell_environment "G5_LAYOUT_GARDEN_PORT" do
+  value "3004"
+end
+
+magic_shell_environment "G5_THEME_GARDEN_PORT" do
+  value "3005"
+end
+
+magic_shell_environment "G5_WIDGET_GARDEN_PORT" do
+  value "3006"
+end
+
+magic_shell_environment "G5_SIBLING_DEPLOYER_PORT" do
+  value "3007"
+end
+
+magic_shell_environment "G5_CONTENT_MANAGEMENT_SYSTEM_PORT" do
+  value "3008"
+end
+
+magic_shell_environment "G5_PHONE_NUMBER_SERVICE_PORT" do
+  value "3009"
+end
+
+magic_shell_environment "G5_PRICING_AND_AVAILABILITY_PORT" do
+  value "3010"
+end
