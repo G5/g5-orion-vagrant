@@ -14,9 +14,10 @@ Everything you need for development work on the Orion stack.
 
 ### Automagical Method
 
-Execute the following command:
+Clone this repo and execute the following command:
 
 ```bash
+git clone https://github.com/G5/g5-orion-vagrant && cd g5-orion-vagrant
 ./bin/setup.rb
 ```
 
