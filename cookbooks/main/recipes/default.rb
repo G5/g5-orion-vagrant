@@ -44,10 +44,6 @@ end
 
 include_recipe "phantomjs::default"
 
-magic_shell_environment "RAILS_ENV" do
-  value "development"
-end
-
 magic_shell_environment "SECRET_TOKEN" do
   value SecureRandom.hex(64)
 end
