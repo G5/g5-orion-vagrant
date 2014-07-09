@@ -21,7 +21,16 @@ rubies.each do |ruby_ver|
   end
 end
 
-["git", "nodejs", "redis-server", "vim", "libsqlite3-dev", "sqlite3", "firefox"].each do |package_name|
+[
+  "git",
+  "nodejs", # asset packaging, ember, etc
+  "redis-server",
+  "vim", # the one true editor
+  "libsqlite3-dev",
+  "sqlite3",
+  "firefox", # maybe for selenium?
+  "postgresql-contrib-9.3" # for hstore, probably json too
+].each do |package_name|
   package package_name
 end
 
