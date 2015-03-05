@@ -2,7 +2,7 @@
 # Cookbook Name:: g5-orion-vagrant
 # Spec:: default
 #
-# Copyright (c) 2015 The Authors, All Rights Reserved.
+# Copyright (c) 2015 G5, All Rights Reserved.
 
 require 'spec_helper'
 
