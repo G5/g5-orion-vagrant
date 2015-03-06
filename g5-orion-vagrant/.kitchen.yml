@@ -16,3 +16,6 @@ suites:
     run_list:
       - recipe[g5-orion-vagrant::default]
     attributes:
+      postgresql:
+        password:
+          postgres: 'password'

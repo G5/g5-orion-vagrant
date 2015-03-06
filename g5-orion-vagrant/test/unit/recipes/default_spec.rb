@@ -7,17 +7,21 @@
 require 'spec_helper'
 
 describe 'g5-orion-vagrant::default' do
+  before do
+    stub_command('ls /var/lib/postgresql/9.3/main/recovery.conf').and_return('')
+  end
 
-  context 'When all attributes are default, on an unspecified platform' do
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new do |node|
+      node.set['postgresql']['password']['postgres'] = ''
+    end.converge(described_recipe)
+  end
 
-    let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new
-      runner.converge(described_recipe)
-    end
+  it 'converges successfully' do
+    chef_run # This should not raise an error
+  end
 
-    it 'converges successfully' do
-      chef_run # This should not raise an error
-    end
-
+  it 'includes the g5stack::default recipe' do
+    expect(chef_run).to include_recipe('g5stack::default')
   end
 end
