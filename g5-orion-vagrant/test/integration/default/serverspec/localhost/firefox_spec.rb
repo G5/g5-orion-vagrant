@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'Firefox' do
-  describe package('firefox') do
-    it { is_expected.to be_installed }
+  describe command('which firefox') do
+    its(:stdout) { is_expected.to match('/usr/local/bin/firefox')}
   end
 
   describe command('firefox -v') do
-    its(:stdout) { is_expected.to match(/Mozilla Firefox 31.5.0esr/) }
+    its(:stdout) { is_expected.to match('Mozilla Firefox 31.5.0') }
   end
 end

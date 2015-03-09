@@ -29,37 +29,7 @@ describe 'g5-orion-vagrant::default' do
     expect(chef_run).to include_recipe('g5stack::gitconfig')
   end
 
-  context 'when firefox version is default' do
-    it 'installs the firefox package with the default version' do
-      expect(chef_run).to install_package('firefox').with_version('31.5.0esr')
-    end
-  end
-
-  context 'when firefox version is custom' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new do |node|
-        node.set['postgresql']['password']['postgres'] = ''
-        node.set['firefox']['version'] = firefox_version
-      end.converge(described_recipe)
-    end
-
-    let(:firefox_version) { '34.0.5' }
-
-    it 'installs the firefox package with the correct version' do
-      expect(chef_run).to install_package('firefox').with_version(firefox_version)
-    end
-  end
-
-  context 'when firefox version is latest' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new do |node|
-        node.set['postgresql']['password']['postgres'] = ''
-        node.set['firefox']['version'] = 'latest'
-      end.converge(described_recipe)
-    end
-
-    it 'includes the firefox::default recipe' do
-      expect(chef_run).to include_recipe('firefox::default')
-    end
+  it 'includes the mozilla-firefox::default recipe' do
+    expect(chef_run).to include_recipe('mozilla-firefox::default')
   end
 end
