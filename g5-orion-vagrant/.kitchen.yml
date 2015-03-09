@@ -1,6 +1,7 @@
 ---
 driver:
   name: vagrant
+  box: 'getg5/g5stack'
   forward_agent: true
   customize:
     memory: 2048
