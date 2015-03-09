@@ -24,4 +24,8 @@ describe 'g5-orion-vagrant::default' do
   it 'includes the g5stack::default recipe' do
     expect(chef_run).to include_recipe('g5stack::default')
   end
+
+  it 'includes the g5stack::gitconfig recipe' do
+    expect(chef_run).to include_recipe('g5stack::gitconfig')
+  end
 end

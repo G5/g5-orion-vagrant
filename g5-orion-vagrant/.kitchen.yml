@@ -19,3 +19,7 @@ suites:
       postgresql:
         password:
           postgres: 'password'
+      git:
+        user:
+          name: <%= `git config user.name`.strip %>
+          email: <%= `git config user.email`.strip %>
