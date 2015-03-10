@@ -1,0 +1,96 @@
+DEPENDENCIES
+  g5-nodejs
+    git: git@github.com:G5/g5-nodejs.git
+    revision: 4f1ab30c0ed66ad8542065600b75c48a87d256f0
+  g5-orion-vagrant
+    path: .
+    metadata: true
+  g5-postgresql
+    git: git@github.com:G5/g5-postgresql.git
+    revision: 4dab68d9e585a8a483e4917f19b6d2c6e11481fd
+  g5-rbenv
+    git: git@github.com:G5/g5-rbenv.git
+    revision: f110c2e671fa4e85f7cf45cd4ffc785afb569d3d
+  g5stack
+    git: git@github.com:G5/g5stack.git
+    revision: eff35c3ea4679510ff228e51db78ec8bd10ea85f
+
+GRAPH
+  7-zip (1.0.2)
+    windows (>= 1.2.2)
+  apt (2.3.10)
+  ark (0.9.0)
+    7-zip (>= 0.0.0)
+    windows (>= 0.0.0)
+  build-essential (1.4.4)
+  chef-sugar (2.5.0)
+  chef_handler (1.1.6)
+  chocolatey (0.2.0)
+    windows (~> 1.31)
+  dmg (2.2.2)
+  g5-nodejs (0.2.0)
+    nodejs (~> 2.0)
+  g5-orion-vagrant (0.1.0)
+    chef-sugar (>= 0.0.0)
+    g5stack (>= 0.0.0)
+    magic_shell (>= 0.0.0)
+    mozilla-firefox (>= 0.0.0)
+  g5-postgresql (0.2.0)
+    postgresql (>= 0.0.0)
+  g5-rbenv (0.2.0)
+    rbenv (= 1.7.1)
+  g5stack (0.2.1)
+    apt (= 2.3.10)
+    build-essential (= 1.4.4)
+    g5-nodejs (>= 0.0.0)
+    g5-postgresql (>= 0.0.0)
+    g5-rbenv (>= 0.0.0)
+    imagemagick (>= 0.0.0)
+    phantomjs (>= 0.0.0)
+    redisio (>= 0.0.0)
+    sudo (>= 0.0.0)
+  git (4.1.0)
+    build-essential (>= 0.0.0)
+    dmg (>= 0.0.0)
+    runit (>= 1.0)
+    windows (>= 0.0.0)
+    yum (~> 3.0)
+    yum-epel (>= 0.0.0)
+  imagemagick (0.2.3)
+  magic_shell (1.0.0)
+  mozilla-firefox (0.1.1)
+    ark (>= 0.0.0)
+  nodejs (2.2.0)
+    apt (>= 0.0.0)
+    ark (>= 0.0.0)
+    build-essential (>= 0.0.0)
+    yum-epel (>= 0.0.0)
+  ohai (2.0.1)
+  openssl (4.0.0)
+    chef-sugar (>= 0.0.0)
+  phantomjs (1.0.3)
+    build-essential (>= 0.0.0)
+    chocolatey (>= 0.0.0)
+  postgresql (3.4.18)
+    apt (>= 1.9.0)
+    build-essential (>= 0.0.0)
+    openssl (~> 4.0.0)
+  rbenv (1.7.1)
+    apt (>= 0.0.0)
+    build-essential (>= 0.0.0)
+    git (>= 0.0.0)
+    ohai (>= 1.1)
+  redisio (2.2.4)
+    build-essential (>= 0.0.0)
+    ulimit (>= 0.1.2)
+  runit (1.5.16)
+    build-essential (>= 0.0.0)
+    yum (~> 3.0)
+    yum-epel (>= 0.0.0)
+  sudo (2.7.1)
+  ulimit (0.3.2)
+  windows (1.36.6)
+    chef_handler (>= 0.0.0)
+  yum (3.5.3)
+  yum-epel (0.6.0)
+    yum (~> 3.0)
