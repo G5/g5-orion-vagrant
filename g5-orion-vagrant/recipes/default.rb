@@ -62,3 +62,37 @@ end
 magic_shell_environment 'G5_PRICING_AND_AVAILABILITY_PORT' do
   value '3010'
 end
+
+# Pretty sure these aren't really doing what the original dev thought
+# they were doing, but maintaining them for now
+magic_shell_environment "HEROKU_API_KEY" do
+  value `echo $HEROKU_API_KEY`
+end
+
+magic_shell_environment 'HEROKU_USERNAME' do
+  value `echo $HEROKU_USERNAME`
+end
+
+magic_shell_environment 'ID_RSA' do
+  value `echo $ID_RSA`
+end
+
+magic_shell_environment 'HEROKU_REPO' do
+  value `echo $HEROKU_REPO`
+end
+
+magic_shell_environment 'GITHUB_REPO' do
+  value `echo $GITHUB_REPO`
+end
+
+magic_shell_environment 'AWS_ACCESS_KEY_ID' do
+  value `echo $AWS_ACCESS_KEY_ID`
+end
+
+magic_shell_environment 'AWS_SECRET_ACCESS_KEY' do
+  value `echo $AWS_SECRET_ACCESS_KEY`
+end
+
+magic_shell_environment 'AWS_REGION' do
+  value `echo $AWS_REGION`
+end

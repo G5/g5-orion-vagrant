@@ -88,4 +88,52 @@ describe 'Environment Variables' do
 
     its(:stdout) { is_expected.to match(/^#{name}=3010$/) }
   end
+
+  describe 'HEROKU_API_KEY' do
+    let(:name) { 'HEROKU_API_KEY' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'ID_RSA' do
+    let(:name) { 'ID_RSA' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'HEROKU_USERNAME' do
+    let(:name) { 'HEROKU_USERNAME' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'HEROKU_REPO' do
+    let(:name) { 'HEROKU_REPO' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'GITHUB_REPO' do
+    let(:name) { 'GITHUB_REPO' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'AWS_ACCESS_KEY_ID' do
+    let(:name) { 'AWS_ACCESS_KEY_ID' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'AWS_SECRET_ACCESS_KEY' do
+    let(:name) { 'AWS_SECRET_ACCESS_KEY' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
+
+  describe 'AWS_REGION' do
+    let(:name) { 'AWS_REGION' }
+
+    its(:stdout) { is_expected.to match(/^#{name}=$/) }
+  end
 end
