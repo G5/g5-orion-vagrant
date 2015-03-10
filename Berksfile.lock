@@ -31,7 +31,6 @@ GRAPH
   g5-nodejs (0.2.0)
     nodejs (~> 2.0)
   g5-orion-vagrant (0.1.0)
-    chef-sugar (>= 0.0.0)
     g5stack (>= 0.0.0)
     magic_shell (>= 0.0.0)
     mozilla-firefox (>= 0.0.0)
