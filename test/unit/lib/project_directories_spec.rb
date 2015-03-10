@@ -33,11 +33,13 @@ describe ProjectDirectories do
       end
 
       it 'should have an entry for the first custom project' do
-        expect(project_entries).to include('my-custom-project' => 'my-repo-url')
+        project_obj = ProjectDirectories::Project.new(name: 'my-custom-project', repo: 'my-repo-url')
+        expect(project_entries).to include(project_obj)
       end
 
       it 'should have an entry for the second custom project' do
-        expect(project_entries).to include('my-other-custom-project' => 'my-other-repo-url')
+        project_obj = ProjectDirectories::Project.new(name: 'my-other-custom-project', repo: 'my-other-repo-url')
+        expect(project_entries).to include(project_obj)
       end
     end
 
@@ -51,88 +53,19 @@ describe ProjectDirectories do
       end
 
       it 'should have an entry for the first standard project' do
-        expect(project_entries).to include('main-app' => 'repo.url')
+        project_obj = ProjectDirectories::Project.new(name: 'main-app', repo: 'repo.url')
+        expect(project_entries).to include(project_obj)
       end
 
-      it 'should have an entry for the second custom project' do
-        expect(project_entries).to include('auxiliary_gem_project' => 'gem.repo.url')
+      it 'should have an entry for the second standard project' do
+        project_obj = ProjectDirectories::Project.new(name: 'auxiliary_gem_project', repo: 'gem.repo.url')
+        expect(project_entries).to include(project_obj)
       end
     end
 
     context 'without a projects file' do
       it 'should have no projects' do
         expect(project_entries).to be_empty
-      end
-    end
-  end
-
-  describe '#each' do
-    before do
-      File.open('projects-override.yml', 'w') { |f| f.write overrides.to_yaml }
-      File.open('projects.yml', 'w') { |f| f.write projects.to_yaml }
-    end
-
-    let(:mock_obj) { double(set_project: nil) }
-
-    context 'without arguments' do
-      let(:projects_each) { ProjectDirectories.new.each }
-
-      it 'should return an enumerator' do
-        expect(projects_each).to be_an_instance_of(Enumerator)
-      end
-
-      it 'should enumerate the overrides hash pairs' do
-        expect(projects_each.inspect).to eq(overrides.each_pair.inspect)
-      end
-
-      it 'should not use the default projects hash' do
-        expect(projects_each.inspect).to_not eq(projects.each_pair.inspect)
-      end
-
-      it 'should not be empty' do
-        expect { projects_each.next }.to_not raise_error
-      end
-    end
-
-    context 'with block that accepts one argument' do
-      let!(:projects_each) do
-        ProjectDirectories.new.each do |proj_name|
-          mock_obj.set_project(proj_name)
-        end
-      end
-
-      it 'should call the block twice' do
-        expect(mock_obj).to have_received(:set_project).twice
-      end
-
-      it 'should call the block with the first project name' do
-        expect(mock_obj).to have_received(:set_project).with(overrides.keys.first)
-      end
-
-      it 'should call the block with the second project name' do
-        expect(mock_obj).to have_received(:set_project).with(overrides.keys.last)
-      end
-    end
-
-    context 'with block that accepts two arguments' do
-      let!(:projects_each) do
-        ProjectDirectories.new.each do |proj_name, repo_url|
-          mock_obj.set_project(proj_name, repo_url)
-        end
-      end
-
-      it 'should call the block twice' do
-        expect(mock_obj).to have_received(:set_project).twice
-      end
-
-      it 'should call the block with the first project entry' do
-        expect(mock_obj).to have_received(:set_project).
-          with(overrides.keys.first, overrides.values.first)
-      end
-
-      it 'should call the block the second project entry' do
-        expect(mock_obj).to have_received(:set_project).
-          with(overrides.keys.last, overrides.values.last)
       end
     end
   end
@@ -146,66 +79,104 @@ describe ProjectDirectories do
     end
   end
 
-  describe '.working_dir' do
-    let(:working_dir) { ProjectDirectories.working_dir('foo') }
+  describe ProjectDirectories::Project do
+    subject { project }
 
-    it 'should be a sibling to the vagrant directory' do
-      expect(working_dir).to eq(File.expand_path('../foo',ProjectDirectories.vagrant_dir))
-    end
-  end
+    context 'with default initialization' do
+      let(:project) { ProjectDirectories::Project.new }
 
-  describe '.ruby_version' do
-    subject(:ruby_version) { ProjectDirectories.ruby_version('foo') }
-    let(:working_dir) { File.expand_path('../foo', ProjectDirectories.vagrant_dir) }
-    before { FileUtils.mkdir_p(working_dir) }
-
-    let(:version_string) { '2.1.5' }
-
-    context 'when there is a .ruby-version file' do
-      before do
-        ruby_version_file = File.expand_path('.ruby-version', working_dir)
-        File.open(ruby_version_file, 'w') { |f| f.write "#{version_string }\n" }
+      it 'should have a nil name' do
+        expect(project.name).to be_nil
       end
 
-      it 'should return the correct version string' do
-        expect(ruby_version).to eq(version_string)
+      it 'should have a nil repo' do
+        expect(project.repo).to be_nil
+      end
+
+      it 'should have a nil working_dir' do
+        expect(project.working_dir).to be_nil
+      end
+
+      it 'should have a nil ruby version' do
+        expect(project.ruby_version).to be_nil
       end
     end
 
-    context 'when there is a Gemfile' do
-      let(:gemfile) { File.expand_path('Gemfile', working_dir) }
+    context 'with non-default initialization' do
+      let(:project) { ProjectDirectories::Project.new(name: name, repo: repo) }
+      let(:name) { 'my_project' }
+      let(:repo) { 'git@github.com:mine/my_project.git'}
 
-      context 'with a ruby version' do
-        before do
-          File.open(gemfile, 'w') do |f|
-            f.write "source 'https://rubygems.org'\n"
-            f.write "ruby '#{version_string}'\n\n"
-            f.write "gem 'rails', '~> 4.1.7'\n"
+      it 'should have the correct name' do
+        expect(project.name).to eq(name)
+      end
+
+      it 'should have the correct repo url' do
+        expect(project.repo).to eq(repo)
+      end
+
+      describe '#working_dir' do
+        subject(:working_dir) { project.working_dir }
+
+        it 'should be a sibling to the vagrant directory' do
+          expect(working_dir).to eq(File.expand_path("../#{name}", ProjectDirectories.vagrant_dir))
+        end
+      end
+
+      describe '#ruby_version' do
+        subject(:ruby_version) { project.ruby_version }
+        let(:working_dir) { File.expand_path("../#{name}", ProjectDirectories.vagrant_dir) }
+        before { FileUtils.mkdir_p(working_dir) }
+
+        let(:version_string) { '2.1.5' }
+
+        context 'when there is a .ruby-version file' do
+          before do
+            ruby_version_file = File.expand_path('.ruby-version', working_dir)
+            File.open(ruby_version_file, 'w') { |f| f.write "#{version_string }\n" }
+          end
+
+          it 'should return the correct version string' do
+            expect(ruby_version).to eq(version_string)
           end
         end
 
-        it 'should return the correct version string' do
-          expect(ruby_version).to eq(version_string)
-        end
-      end
+        context 'when there is a Gemfile' do
+          let(:gemfile) { File.expand_path('Gemfile', working_dir) }
 
-      context 'without a ruby version' do
-        before do
-          File.open(gemfile, 'w') do |f|
-            f.write "source 'https://rubygems.org'\n\n"
-            f.write "gem 'rails', '~> 4.1.7'\n"
+          context 'with a ruby version' do
+            before do
+              File.open(gemfile, 'w') do |f|
+                f.write "source 'https://rubygems.org'\n"
+                f.write "ruby '#{version_string}'\n\n"
+                f.write "gem 'rails', '~> 4.1.7'\n"
+              end
+            end
+
+            it 'should return the correct version string' do
+              expect(ruby_version).to eq(version_string)
+            end
+          end
+
+          context 'without a ruby version' do
+            before do
+              File.open(gemfile, 'w') do |f|
+                f.write "source 'https://rubygems.org'\n\n"
+                f.write "gem 'rails', '~> 4.1.7'\n"
+              end
+            end
+
+            it 'should be nil' do
+              expect(ruby_version).to be_nil
+            end
           end
         end
 
-        it 'should be nil' do
-          expect(ruby_version).to be_nil
+        context 'when there is no ruby version specified' do
+          it 'should be nil' do
+            expect(ruby_version).to be_nil
+          end
         end
-      end
-    end
-
-    context 'when there is no ruby version specified' do
-      it 'should be nil' do
-        expect(ruby_version).to be_nil
       end
     end
   end
