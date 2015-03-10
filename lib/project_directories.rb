@@ -24,6 +24,23 @@ class ProjectDirectories
     File.expand_path(File.join(vagrant_dir, '..', project_name))
   end
 
+  def self.ruby_version(project_name)
+    version_file = File.join(working_dir(project_name), '.ruby-version')
+    gemfile = File.join(working_dir(project_name), 'Gemfile')
+
+    if File.exists?(version_file)
+      version = File.read(version_file).strip
+    elsif File.exists?(gemfile)
+      File.open gemfile do |file|
+        file.find do |line|
+          match = line.match(/ruby ['"](.*)['"]/)
+          version = match[1] if match
+        end
+      end
+    end
+
+    version
+  end
   private
   def projects_file
     if File.exist?('projects-override.yml')

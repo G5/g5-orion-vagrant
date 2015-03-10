@@ -153,4 +153,60 @@ describe ProjectDirectories do
       expect(working_dir).to eq(File.expand_path('../foo',ProjectDirectories.vagrant_dir))
     end
   end
+
+  describe '.ruby_version' do
+    subject(:ruby_version) { ProjectDirectories.ruby_version('foo') }
+    let(:working_dir) { File.expand_path('../foo', ProjectDirectories.vagrant_dir) }
+    before { FileUtils.mkdir_p(working_dir) }
+
+    let(:version_string) { '2.1.5' }
+
+    context 'when there is a .ruby-version file' do
+      before do
+        ruby_version_file = File.expand_path('.ruby-version', working_dir)
+        File.open(ruby_version_file, 'w') { |f| f.write "#{version_string }\n" }
+      end
+
+      it 'should return the correct version string' do
+        expect(ruby_version).to eq(version_string)
+      end
+    end
+
+    context 'when there is a Gemfile' do
+      let(:gemfile) { File.expand_path('Gemfile', working_dir) }
+
+      context 'with a ruby version' do
+        before do
+          File.open(gemfile, 'w') do |f|
+            f.write "source 'https://rubygems.org'\n"
+            f.write "ruby '#{version_string}'\n\n"
+            f.write "gem 'rails', '~> 4.1.7'\n"
+          end
+        end
+
+        it 'should return the correct version string' do
+          expect(ruby_version).to eq(version_string)
+        end
+      end
+
+      context 'without a ruby version' do
+        before do
+          File.open(gemfile, 'w') do |f|
+            f.write "source 'https://rubygems.org'\n\n"
+            f.write "gem 'rails', '~> 4.1.7'\n"
+          end
+        end
+
+        it 'should be nil' do
+          expect(ruby_version).to be_nil
+        end
+      end
+    end
+
+    context 'when there is no ruby version specified' do
+      it 'should be nil' do
+        expect(ruby_version).to be_nil
+      end
+    end
+  end
 end
