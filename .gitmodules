@@ -1,3 +1,0 @@
-[submodule "cookbooks/magic_shell"]
-	path = cookbooks/magic_shell
-	url = git@github.com:customink-webops/magic_shell.git
