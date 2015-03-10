@@ -91,7 +91,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       :postgresql => { :password => { :postgres => "password" } },
       :rbenv => { :ruby_versions => ruby_versions.to_a },
       :git => { :user => { :name => `git config user.name`.strip,
-                           :email =>`git config user.email`.strip } }
+                           :email =>`git config user.email`.strip }},
+      'g5-orion-vagrant' => { :env => {
+                                :heroku_api_key => `echo $HEROKU_API_KEY`.strip,
+                                :heroku_username => `echo $HEROKU_USERNAME`.strip,
+                                :id_rsa => `echo $ID_RSA`.strip,
+                                :heroku_repo => `echo $HEROKU_REPO`.strip,
+                                :github_repo => `echo $GITHUB_REPO`.strip,
+                                :aws_access_key_id => `echo $AWS_ACCESS_KEY_ID`.strip,
+                                :aws_secret_access_key => `echo $AWS_SECRET_ACCESS_KEY`.strip,
+                                :aws_region => `echo $AWS_REGION`.strip
+                            }}
     }
-  end
 end
