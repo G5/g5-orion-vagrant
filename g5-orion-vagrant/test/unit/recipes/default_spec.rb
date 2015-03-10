@@ -33,7 +33,24 @@ describe 'g5-orion-vagrant::default' do
     expect(chef_run).to include_recipe('mozilla-firefox::default')
   end
 
-  context 'with default config' do
+  context 'with non-default list of rubies' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new do |node|
+        node.set['postgresql']['password']['postgres'] = ''
+        node.set['rbenv']['ruby_versions'] = ['2.1.2', '2.1.5']
+      end.converge(described_recipe)
+    end
+
+    it 'installs 2.1.2 via rbenv' do
+      expect(chef_run).to install_rbenv_ruby('2.1.2')
+    end
+
+    it 'installs 2.1.5 via rbenv' do
+      expect(chef_run).to install_rbenv_ruby('2.1.5')
+    end
+  end
+
+  context 'with default environment config' do
     it 'sets the SECRET_TOKEN via magic_shell' do
       expect(chef_run).to add_magic_shell_environment('SECRET_TOKEN')
     end

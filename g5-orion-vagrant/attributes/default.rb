@@ -1,5 +1,7 @@
 default['mozilla-firefox']['version'] = '31.5.0esr'
 
+default['rbenv']['ruby_versions'] = []
+
 default['g5-orion-vagrant']['env']['secret_token'] = SecureRandom.hex(64)
 default['g5-orion-vagrant']['env']['g5_configurator_webhook_url'] = 'http://g5-configurator.herokuapp.com/consume_feed'
 default['g5-orion-vagrant']['env']['heroku_app_name'] = 'not-a-heroku-app'

@@ -7,6 +7,13 @@ include_recipe 'g5stack'
 include_recipe 'g5stack::gitconfig'
 include_recipe 'mozilla-firefox'
 
+node['rbenv']['ruby_versions'].each do |ruby_ver|
+  rbenv_ruby ruby_ver
+  rbenv_ruby 'bundler' do
+    ruby_version ruby_ver
+  end
+end
+
 node['g5-orion-vagrant']['env'].each_pair do |key, val|
   magic_shell_environment key.upcase do
     value val
