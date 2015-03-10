@@ -6,3 +6,4 @@ version          '0.1.0'
 
 depends 'g5stack'
 depends 'mozilla-firefox'
+depends 'magic_shell'
