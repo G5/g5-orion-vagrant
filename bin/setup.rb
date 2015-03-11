@@ -1,26 +1,47 @@
 #!/usr/bin/env ruby
 
-# Initialize the git submodules for shared recipes
-puts "Updating git submodules..."
-`git submodule update --init --recursive`
-
 # Configure ssh-agent
 puts "Updating ssh-agent..."
 `ssh-add`
 
-# Clone the development repos
-require 'yaml'
+# Install required cookbooks
+puts "Installing cookbook dependencies..."
+`chef exec berks install`
 
-vagrant_dir = File.join(File.dirname(__FILE__), '..')
-config_file = File.join(vagrant_dir, 'projects.yml')
+# Install required vagrant plugins
+puts "Managing vagrant plugins (this could take a while)..."
+def install_vagrant_plugin(plugin_name, plugin_version=nil)
+  plugin_opts = "--plugin-version='#{plugin_version}'" if plugin_version
+  match_data = `vagrant plugin list`.match(/#{plugin_name} \(([\d.]+)\)/m)
 
-YAML.load_file(config_file).each_pair do |project_name, project_git_url|
-  working_dir = File.expand_path(File.join(vagrant_dir, '..', project_name))
-
-  if File.exists?(working_dir)
-    puts "Found existing directory for '#{project_name}'. Skipping..."
-  else
-    puts "Cloning '#{project_name}' into #{working_dir}"
-    `git clone #{project_git_url} #{working_dir}`
+  if !match_data || (plugin_version && match_data[1] != plugin_version)
+    `vagrant plugin install #{plugin_name} #{plugin_opts}`
+  elsif !plugin_version
+    `vagrant plugin update #{plugin_name}`
   end
+end
+install_vagrant_plugin('vagrant-vbguest')
+install_vagrant_plugin('vagrant-berkshelf', '>= 4.0.3')
+
+# Clone the development repos
+puts "Cloning project repositories..."
+require_relative '../lib/project_directories'
+
+ProjectDirectories.new.projects.each do |project|
+  if File.exists?(project.working_dir)
+    puts "Found existing directory for '#{project.name}'. Skipping."
+  else
+    puts "Cloning #{project.name} into #{project.working_dir}"
+    `git clone #{project.repo} #{project.working_dir}`
+  end
+end
+
+# Check for potential berkshelf collision
+unless `gem list berkshelf`.chomp.empty?
+  puts "\nWARNING: You previously installed berkshelf as a gem, but "
+  puts "vagrant-berkshelf requires the version of berkshelf included "
+  puts "with ChefDK. Consider uninstalling the berkshelf gem, or "
+  puts "execute all vagrant commands through chef exec, e.g.:"
+  puts ""
+  puts "    chef exec vagrant up "
 end

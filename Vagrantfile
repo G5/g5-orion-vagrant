@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "getg5/g5stack"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -44,6 +44,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Default value: false
   config.ssh.forward_agent = true
 
+  # If false, disable generating a new insecure key the first time vagrant up
+  # is run
+  # Default value: true
+  config.ssh.insert_key = false
+
   # If true, X11 forwarding over SSH connections is enabled. Defaults to false.
   config.ssh.forward_x11 = true
 
@@ -54,17 +59,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
   require_relative 'lib/project_directories'
   ruby_versions = Set.new
-  ProjectDirectories.new.each do |name|
-    source_dir = ProjectDirectories.working_dir(name)
-    dest_dir = "/#{name}"
-
-    if File.exists?(source_dir)
-      config.vm.synced_folder(source_dir, dest_dir, nfs: true)
-
-      ruby_ver = ProjectDirectories.ruby_version(name)
-      ruby_versions << ruby_ver if ruby_ver
+  ProjectDirectories.new.projects.each do |project|
+    if File.exists?(project.working_dir)
+      config.vm.synced_folder(project.working_dir, "/#{project.name}", nfs: true)
+      ruby_versions << project.ruby_version if project.ruby_version
     else
-      puts "I didn't find a directory for '#{name}'.  That might be OK, if you didn't need it."
+      puts "I didn't find a directory for '#{project.name}'.  That might be OK, if you didn't need it."
     end
   end
 
@@ -82,8 +82,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   config.vm.provision "chef_solo" do |chef|
-    chef.cookbooks_path = [ "g5stack", "cookbooks" ]
-    chef.add_recipe "main"
+    chef.add_recipe "g5-orion-vagrant"
     chef.json = {
       :postgresql => { :password => { :postgres => "password" } },
       :rbenv => { :ruby_versions => ruby_versions.to_a },
@@ -100,4 +99,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                                 :aws_region => `echo $AWS_REGION`.strip
                             }}
     }
+  end
 end

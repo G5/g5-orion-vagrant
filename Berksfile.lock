@@ -87,7 +87,7 @@ GRAPH
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
   sudo (2.7.1)
-  ulimit (0.3.2)
+  ulimit (0.3.3)
   windows (1.36.6)
     chef_handler (>= 0.0.0)
   yum (3.5.3)

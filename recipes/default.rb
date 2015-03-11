@@ -9,9 +9,6 @@ include_recipe 'mozilla-firefox'
 
 node['rbenv']['ruby_versions'].each do |ruby_ver|
   rbenv_ruby ruby_ver
-  rbenv_ruby 'bundler' do
-    ruby_version ruby_ver
-  end
 end
 
 node['g5-orion-vagrant']['env'].each_pair do |key, val|
