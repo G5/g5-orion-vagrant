@@ -12,6 +12,7 @@ Everything you need for development work on the Orion stack.
 * [Oracle VirtualBox](http://virtualbox.org)
 * [ChefDK](https://downloads.getchef.com/chef-dk) >= 0.4.0
 * [Ruby](https://www.ruby-lang.org) >= 1.9.3
+* [XQuartz](http://xquartz.macosforge.org/trac/wiki/Releases) (if using Mac OS X)
 
 ## Installation ##
 
