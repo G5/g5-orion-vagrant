@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "getg5/g5stack"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -44,6 +44,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Default value: false
   config.ssh.forward_agent = true
 
+  # If false, disable generating a new insecure key the first time vagrant up
+  # is run
+  # Default value: true
+  config.ssh.insert_key = false
+
   # If true, X11 forwarding over SSH connections is enabled. Defaults to false.
   config.ssh.forward_x11 = true
 
@@ -52,22 +57,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  require_relative 'lib/project_directories'
   ruby_versions = Set.new
-  projects_file = File.exist?('projects-override.yml') ? 'projects-override.yml' : 'projects.yml'
-  require 'yaml'
-  YAML.load_file(projects_file).each_pair do |project_name, project_git_url|
-    source_dir = File.expand_path("../../#{project_name}", __FILE__)
-    dest_dir = "/#{project_name}"
-
-    if File.exists?(source_dir)
-      # Use NFS to share folders.  It's faster, but doesn't work on Windows.
-      config.vm.synced_folder(source_dir, dest_dir, nfs: true)
-
-      # Add project ruby version to list for rbenv to install
-      ruby_ver = "#{source_dir}/.ruby-version"
-      ruby_versions << File.read(ruby_ver).strip if File.exists?(ruby_ver)
+  ProjectDirectories.new.projects.each do |project|
+    if File.exists?(project.working_dir)
+      config.vm.synced_folder(project.working_dir, "/#{project.name}", nfs: true)
+      ruby_versions << project.ruby_version if project.ruby_version
     else
-      puts "I didn't find a directory for '#{project_name}'.  That might be OK, if you didn't need it."
+      puts "I didn't find a directory for '#{project.name}'.  That might be OK, if you didn't need it."
     end
   end
 
@@ -85,13 +82,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   config.vm.provision "chef_solo" do |chef|
-    chef.cookbooks_path = [ "g5stack", "cookbooks" ]
-    chef.add_recipe "main"
+    chef.add_recipe "g5-orion-vagrant"
     chef.json = {
       :postgresql => { :password => { :postgres => "password" } },
       :rbenv => { :ruby_versions => ruby_versions.to_a },
       :git => { :user => { :name => `git config user.name`.strip,
-                           :email =>`git config user.email`.strip } }
+                           :email =>`git config user.email`.strip }},
+      'g5-orion-vagrant' => { :env => {
+                                :heroku_api_key => `echo $HEROKU_API_KEY`.strip,
+                                :heroku_username => `echo $HEROKU_USERNAME`.strip,
+                                :id_rsa => `echo $ID_RSA`.strip,
+                                :heroku_repo => `echo $HEROKU_REPO`.strip,
+                                :github_repo => `echo $GITHUB_REPO`.strip,
+                                :aws_access_key_id => `echo $AWS_ACCESS_KEY_ID`.strip,
+                                :aws_secret_access_key => `echo $AWS_SECRET_ACCESS_KEY`.strip,
+                                :aws_region => `echo $AWS_REGION`.strip
+                            }}
     }
   end
 end

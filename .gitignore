@@ -1,14 +1,18 @@
-# Ignore vagrant dotfile
 .vagrant
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+
+.kitchen/
+.kitchen.local.yml
 
 # Ignore custom projects list
 projects-override.yml
-
-# Ignore projects under development
-g5-hub/
-g5-configurator/
-g5-client-app-creator/
-g5-client-sibling-deployer/
-g5-content-management-system/
-g5-phone-number-service/
-g5-pricing-and-availability-service/
